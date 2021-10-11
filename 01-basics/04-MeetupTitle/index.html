@@ -7,15 +7,20 @@
   <body>
     <div id="app">
       <div>
-        <label><input type="radio" value="1" /> 1</label>
-        <label><input type="radio" value="2" /> 2</label>
-        <label><input type="radio" value="3" /> 3</label>
-        <label><input type="radio" value="4" /> 4</label>
-        <label><input type="radio" value="5" /> 5</label>
+        <template v-for="num of 5">
+          <label>
+            <input
+              v-model="selectedNum"
+              :value="num"
+              type="radio"
+            />
+              {{ num }}
+          </label>
+        </template>
 
         <hr />
 
-        <h3>MEETUP_TITLE</h3>
+        <h3>{{ title }}</h3>
       </div>
     </div>
 
