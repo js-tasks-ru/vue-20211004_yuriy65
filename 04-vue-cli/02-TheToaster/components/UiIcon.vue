@@ -3,7 +3,7 @@
 </template>
 
 <script>
-const icons = {
+export const icons = {
   'alert-circle': require('@/assets/icons/icon-alert-circle.svg'),
   'cal-sm': require('@/assets/icons/icon-cal-sm.svg'),
   'cal-lg': require('@/assets/icons/icon-cal-lg.svg'),

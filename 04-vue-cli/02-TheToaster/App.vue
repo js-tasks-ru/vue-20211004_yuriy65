@@ -1,5 +1,5 @@
 <template>
-  <the-toaster ref="toaster" />
+  <the-toaster ref="toaster" timer="5000" manual-delete />
   <p>
     <button @click="success">Add Success Message</button>
     <button @click="error">Add Error Message</button>
