@@ -1,20 +1,33 @@
 <template>
-  <div class="dropdown dropdown_opened">
-    <button type="button" class="dropdown__toggle dropdown__toggle_icon">
-      <ui-icon icon="tv" class="dropdown__icon" />
-      <span>Title</span>
+  <div class="dropdown" :class="{ dropdown_opened: isOpen }">
+    <button
+      type="button"
+      class="dropdown__toggle"
+      :class="{ dropdown__toggle_icon: hasIcon }"
+      @click="isOpen = !isOpen"
+    >
+      <ui-icon v-if="selectedOption && selectedOption.icon" :icon="selectedOption.icon" class="dropdown__icon" />
+      <span>{{ selectedOption ? selectedOption.text : title }}</span>
     </button>
 
-    <div class="dropdown__menu" role="listbox">
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 1
-      </button>
-      <button class="dropdown__item dropdown__item_icon" role="option" type="button">
-        <ui-icon icon="tv" class="dropdown__icon" />
-        Option 2
+    <div v-show="isOpen" class="dropdown__menu" role="listbox">
+      <button
+        v-for="(option, index) in options"
+        :key="index"
+        class="dropdown__item"
+        :class="{ dropdown__item_icon: hasIcon }"
+        role="option"
+        type="button"
+        @click="select(option.value)"
+      >
+        <ui-icon v-if="option.icon" :icon="option.icon" class="dropdown__icon" />
+        {{ option.text }}
       </button>
     </div>
+
+    <select v-show="false" v-model="selectedValue">
+      <option v-for="(option, index) in options" :key="index" :value="option.value">{{ option.text }}</option>
+    </select>
   </div>
 </template>
 
@@ -25,6 +38,56 @@ export default {
   name: 'UiDropdown',
 
   components: { UiIcon },
+
+  props: {
+    modelValue: String,
+
+    options: {
+      type: Array,
+      required: true,
+    },
+
+    title: {
+      type: String,
+      required: true,
+    },
+  },
+
+  emits: ['update:modelValue'],
+
+  data() {
+    return {
+      isOpen: false,
+    };
+  },
+
+  computed: {
+    selectedOption() {
+      return this.modelValue ? this.options.find((o) => this.modelValue === o.value) : null;
+    },
+
+    selectedValue: {
+      get() {
+        return this.selectedOption ? this.selectedOption.value : null;
+      },
+
+      set(value) {
+        this.select(value);
+      },
+    },
+
+    hasIcon() {
+      return this.options.some((o) => o.icon);
+    },
+  },
+
+  methods: {
+    select(value) {
+      this.$emit('update:modelValue', value);
+
+      this.isOpen = false;
+    },
+  },
 };
 </script>
 
