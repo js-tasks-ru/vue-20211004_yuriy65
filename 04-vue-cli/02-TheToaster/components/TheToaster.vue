@@ -1,13 +1,17 @@
 <template>
-  <ui-toast-group :toasts="toasts" :manual-delete="manualDelete" @delete="deleteToast" />
+  <ui-toast-group :toasts="toasts">
+    <template #default="{ toast }">
+      <button v-if="manualDelete" class="toast__button" @click="deleteToast(toast)">&times;</button>
+    </template>
+  </ui-toast-group>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 import UiToastGroup from './UiToastGroup.vue';
-import { ToastTypes } from './UiToastGroup.vue';
-import type { Toast } from './UiToastGroup.vue';
+import { ToastTypes } from './UiToast.vue';
+import type { Toast } from './UiToast.vue';
 
 const DEFAULT_TIMER = 5000;
 
@@ -66,4 +70,18 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style scoped>
+.toast__button {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+
+  width: 20px;
+  height: 20px;
+
+  background: #ffffff;
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+}
+</style>
